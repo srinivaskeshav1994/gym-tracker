@@ -805,6 +805,240 @@
     font-size: 13px;
   }
 
+  /* Muscle activation card */
+  .muscle-body-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 8px 0 4px;
+  }
+  .body-svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    user-select: none;
+  }
+  .body-svg .silhouette { fill: #25252b; stroke: #3a3a42; stroke-width: 0.5; }
+  .body-svg .m {
+    fill: #3a3a42;
+    transition: fill 0.4s ease;
+    stroke: rgba(0,0,0,0.3);
+    stroke-width: 0.3;
+  }
+  .body-svg .m[data-i="1"] { fill: rgba(48, 209, 88, 0.35); }
+  .body-svg .m[data-i="2"] { fill: rgba(48, 209, 88, 0.55); }
+  .body-svg .m[data-i="3"] { fill: rgba(48, 209, 88, 0.75); }
+  .body-svg .m[data-i="4"] { fill: rgba(48, 209, 88, 0.95); }
+  .body-svg text { fill: var(--text-secondary); font-size: 9px; font-family: inherit; }
+
+  .muscle-list { margin-top: 14px; }
+  .muscle-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 70px;
+    gap: 10px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .muscle-row:last-child { border-bottom: none; }
+  .muscle-row-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .muscle-bar-track {
+    height: 8px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .muscle-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+  .muscle-bar-fill.over {
+    background: var(--success);
+  }
+  .muscle-bar-fill.under {
+    background: linear-gradient(90deg, var(--warning), var(--accent));
+  }
+  .muscle-row-stat {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: right;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .muscle-row-stat .target { color: var(--text-tertiary); font-weight: 500; }
+
+  /* Add exercise button */
+  .add-ex-btn {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .add-ex-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .custom-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(191, 90, 242, 0.15);
+    color: var(--purple);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .ex-remove-btn {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: inherit;
+  }
+  .ex-remove-btn:hover { background: rgba(255, 69, 58, 0.15); }
+
+  /* Suggestions */
+  .suggestion-list {
+    margin-top: 10px;
+  }
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+  }
+  .suggestion-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .suggestion-name {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .suggestion-muscle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+  .suggestion-add {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    flex-shrink: 0;
+  }
+  .suggestion-add:hover { background: var(--accent-hover); }
+
+  /* Week nav */
+  .week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 18px 0 10px;
+  }
+  .week-nav-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .week-nav-btn:hover:not(:disabled) { background: var(--surface-2); }
+  .week-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .week-nav-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  /* Add exercise form in modal */
+  .add-ex-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .add-ex-form label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); }
+  .add-ex-form input, .add-ex-form select {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    width: 100%;
+  }
+  .add-ex-form input:focus, .add-ex-form select:focus { outline: none; border-color: var(--accent); }
+  .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .muscle-pick {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .muscle-chip {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    font-family: inherit;
+  }
+  .muscle-chip.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .lib-result {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .lib-result:hover { border-color: var(--accent); }
+  .lib-result .muscles-mini { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
   /* Mobile */
   @media (max-width: 480px) {
     .app { padding: 0 12px 100px; }
@@ -852,7 +1086,10 @@
     </div>
 
     <div class="section-title">This Week</div>
+    <div id="makeupCard"></div>
     <div id="weekSummaryCard"></div>
+    <div id="muscleCard"></div>
+    <div class="week-nav" id="weekNav"></div>
     <div id="dayList"></div>
   </div>
 
@@ -921,51 +1158,51 @@ const WORKOUTS = {
     name: 'Upper Body A',
     subtitle: 'Push / Pull',
     exercises: [
-      { id: 'mcp', name: 'Machine chest press', sets: 3, reps: '6–10', rest: '2–2.5 min', rpe: '8–9', type: 'compound' },
-      { id: 'lpd', name: 'Lat pulldown', sets: 3, reps: '8–12', rest: '2 min', rpe: '8–9', type: 'compound' },
-      { id: 'spm', name: 'Shoulder press machine', sets: 3, reps: '8–12', rest: '2 min', rpe: '8', type: 'compound' },
-      { id: 'mrn', name: 'Machine row (normal)', sets: 3, reps: '8–12', rest: '90s', rpe: '8', type: 'compound' },
-      { id: 'clr', name: 'Cable lateral raise', sets: 3, reps: '12–15', rest: '60s', rpe: '8–9', type: 'isolation' },
-      { id: 'std', name: 'Seated tricep dip machine', sets: 3, reps: '10–12', rest: '90s', rpe: '8–9', type: 'isolation' },
-      { id: 'dhc', name: 'Dumbbell hammer curl', sets: 3, reps: '10–12', rest: '60s', rpe: '8–9', type: 'isolation' },
-      { id: 'acm1', name: 'Ab crunch machine', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation' }
+      { id: 'mcp', name: 'Machine chest press', sets: 3, reps: '6–10', rest: '2–2.5 min', rpe: '8–9', type: 'compound', muscles: { chest:1.0, triceps:0.4, shoulders:0.3 } },
+      { id: 'lpd', name: 'Lat pulldown', sets: 3, reps: '8–12', rest: '2 min', rpe: '8–9', type: 'compound', muscles: { lats:1.0, biceps:0.4, mid_back:0.3 } },
+      { id: 'spm', name: 'Shoulder press machine', sets: 3, reps: '8–12', rest: '2 min', rpe: '8', type: 'compound', muscles: { shoulders:1.0, triceps:0.4 } },
+      { id: 'mrn', name: 'Machine row (normal)', sets: 3, reps: '8–12', rest: '90s', rpe: '8', type: 'compound', muscles: { mid_back:1.0, lats:0.6, biceps:0.4 } },
+      { id: 'clr', name: 'Cable lateral raise', sets: 3, reps: '12–15', rest: '60s', rpe: '8–9', type: 'isolation', muscles: { shoulders:1.0 } },
+      { id: 'std', name: 'Seated tricep dip machine', sets: 3, reps: '10–12', rest: '90s', rpe: '8–9', type: 'isolation', muscles: { triceps:1.0, chest:0.3 } },
+      { id: 'dhc', name: 'Dumbbell hammer curl', sets: 3, reps: '10–12', rest: '60s', rpe: '8–9', type: 'isolation', muscles: { biceps:1.0, forearms:0.5 } },
+      { id: 'acm1', name: 'Ab crunch machine', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation', muscles: { abs:1.0 } }
     ]
   },
   lowerA: {
     name: 'Lower Body A',
     subtitle: 'Quads & Calves',
     exercises: [
-      { id: 'hsq', name: 'Hack squat', sets: 4, reps: '6–10', rest: '2.5–3 min', rpe: '8–9', type: 'compound' },
-      { id: 'lpr', name: 'Leg press', sets: 3, reps: '10–12', rest: '2 min', rpe: '8', type: 'compound' },
-      { id: 'slc1', name: 'Seated leg curl', sets: 3, reps: '10–15', rest: '90s', rpe: '8–9', type: 'isolation' },
-      { id: 'lex', name: 'Leg extension', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'crm1', name: 'Calf raise machine', sets: 4, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'acm2', name: 'Ab crunch (optional)', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation', optional: true }
+      { id: 'hsq', name: 'Hack squat', sets: 4, reps: '6–10', rest: '2.5–3 min', rpe: '8–9', type: 'compound', muscles: { quads:1.0, glutes:0.4 } },
+      { id: 'lpr', name: 'Leg press', sets: 3, reps: '10–12', rest: '2 min', rpe: '8', type: 'compound', muscles: { quads:1.0, glutes:0.5 } },
+      { id: 'slc1', name: 'Seated leg curl', sets: 3, reps: '10–15', rest: '90s', rpe: '8–9', type: 'isolation', muscles: { hamstrings:1.0 } },
+      { id: 'lex', name: 'Leg extension', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation', muscles: { quads:1.0 } },
+      { id: 'crm1', name: 'Calf raise machine', sets: 4, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation', muscles: { calves:1.0 } },
+      { id: 'acm2', name: 'Ab crunch (optional)', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation', optional: true, muscles: { abs:1.0 } }
     ]
   },
   upperB: {
     name: 'Upper Body B',
     subtitle: 'Angles & Isolation',
     exercises: [
-      { id: 'ibp', name: 'Incline bench press', sets: 3, reps: '6–10', rest: '2–2.5 min', rpe: '8–9', type: 'compound' },
-      { id: 'apu', name: 'Assisted pull-up', sets: 3, reps: '8–12', rest: '2 min', rpe: '8–9', type: 'compound' },
-      { id: 'tbr', name: 'T-bar row (or high row)', sets: 3, reps: '8–12', rest: '2 min', rpe: '8', type: 'compound' },
-      { id: 'cfm', name: 'Chest fly machine', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'clr2', name: 'Cable lateral raise', sets: 4, reps: '12–15', rest: '60s', rpe: '8–9', type: 'isolation' },
-      { id: 'tex', name: 'Tricep extension machine', sets: 3, reps: '10–15', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'mpc', name: 'Machine preacher curl', sets: 3, reps: '10–15', rest: '60s', rpe: '9', type: 'isolation' }
+      { id: 'ibp', name: 'Incline bench press', sets: 3, reps: '6–10', rest: '2–2.5 min', rpe: '8–9', type: 'compound', muscles: { chest:1.0, shoulders:0.4, triceps:0.4 } },
+      { id: 'apu', name: 'Assisted pull-up', sets: 3, reps: '8–12', rest: '2 min', rpe: '8–9', type: 'compound', muscles: { lats:1.0, biceps:0.5, mid_back:0.4 } },
+      { id: 'tbr', name: 'T-bar row (or high row)', sets: 3, reps: '8–12', rest: '2 min', rpe: '8', type: 'compound', muscles: { mid_back:1.0, lats:0.7, biceps:0.3 } },
+      { id: 'cfm', name: 'Chest fly machine', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation', muscles: { chest:1.0 } },
+      { id: 'clr2', name: 'Cable lateral raise', sets: 4, reps: '12–15', rest: '60s', rpe: '8–9', type: 'isolation', muscles: { shoulders:1.0 } },
+      { id: 'tex', name: 'Tricep extension machine', sets: 3, reps: '10–15', rest: '60s', rpe: '9', type: 'isolation', muscles: { triceps:1.0 } },
+      { id: 'mpc', name: 'Machine preacher curl', sets: 3, reps: '10–15', rest: '60s', rpe: '9', type: 'isolation', muscles: { biceps:1.0 } }
     ]
   },
   lowerB: {
     name: 'Lower Body B',
     subtitle: 'Glutes, Hams, Adductors',
     exercises: [
-      { id: 'sqt', name: 'Back squat (or hack squat wide)', sets: 3, reps: '8–10', rest: '2.5–3 min', rpe: '8', type: 'compound' },
-      { id: 'slc2', name: 'Seated leg curl', sets: 4, reps: '10–15', rest: '90s', rpe: '8–9', type: 'isolation' },
-      { id: 'hab', name: 'Hip abduction machine', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'had', name: 'Hip adduction machine', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'crm2', name: 'Calf raise machine', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation' },
-      { id: 'acm3', name: 'Ab crunch machine', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation' }
+      { id: 'sqt', name: 'Back squat (or hack squat wide)', sets: 3, reps: '8–10', rest: '2.5–3 min', rpe: '8', type: 'compound', muscles: { quads:0.8, glutes:0.7, hamstrings:0.3 } },
+      { id: 'slc2', name: 'Seated leg curl', sets: 4, reps: '10–15', rest: '90s', rpe: '8–9', type: 'isolation', muscles: { hamstrings:1.0 } },
+      { id: 'hab', name: 'Hip abduction machine', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation', muscles: { abductors:1.0, glutes:0.4 } },
+      { id: 'had', name: 'Hip adduction machine', sets: 3, reps: '12–15', rest: '60s', rpe: '9', type: 'isolation', muscles: { adductors:1.0 } },
+      { id: 'crm2', name: 'Calf raise machine', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation', muscles: { calves:1.0 } },
+      { id: 'acm3', name: 'Ab crunch machine', sets: 3, reps: '15–20', rest: '60s', rpe: '9', type: 'isolation', muscles: { abs:1.0 } }
     ]
   },
   pickleball: {
@@ -984,6 +1221,83 @@ const WORKOUTS = {
     rest: true
   }
 };
+
+// ============================================================
+// MUSCLE GROUPS + WEEKLY TARGETS (sets per week)
+// ============================================================
+const MUSCLES = {
+  chest:       { name: 'Chest' },
+  shoulders:   { name: 'Shoulders' },
+  biceps:      { name: 'Biceps' },
+  triceps:     { name: 'Triceps' },
+  forearms:    { name: 'Forearms' },
+  abs:         { name: 'Core' },
+  lats:        { name: 'Lats' },
+  mid_back:    { name: 'Mid-Back' },
+  traps:       { name: 'Traps' },
+  quads:       { name: 'Quads' },
+  hamstrings:  { name: 'Hamstrings' },
+  glutes:      { name: 'Glutes' },
+  calves:      { name: 'Calves' },
+  adductors:   { name: 'Adductors' },
+  abductors:   { name: 'Abductors' }
+};
+
+const MUSCLE_TARGETS = {
+  chest: 10, shoulders: 12, biceps: 8, triceps: 8, forearms: 4,
+  abs: 6, lats: 10, mid_back: 8, traps: 4,
+  quads: 10, hamstrings: 8, glutes: 8, calves: 8,
+  adductors: 4, abductors: 4
+};
+
+// ============================================================
+// EXERCISE LIBRARY — for "add custom" + suggestions
+// ============================================================
+const EXERCISE_LIBRARY = [
+  // Chest
+  { name: 'Incline dumbbell press', muscles: { chest:1.0, shoulders:0.4, triceps:0.4 } },
+  { name: 'Decline chest press', muscles: { chest:1.0, triceps:0.4 } },
+  { name: 'Cable crossover', muscles: { chest:1.0 } },
+  { name: 'Pec deck machine', muscles: { chest:1.0 } },
+  { name: 'Dumbbell pullover', muscles: { chest:0.7, lats:0.7 } },
+  // Back
+  { name: 'Cable row (wide)', muscles: { mid_back:1.0, lats:0.5, biceps:0.4 } },
+  { name: 'Single-arm dumbbell row', muscles: { lats:1.0, mid_back:0.5, biceps:0.4 } },
+  { name: 'Straight-arm pulldown', muscles: { lats:1.0 } },
+  { name: 'Face pull', muscles: { shoulders:0.7, mid_back:0.7, traps:0.5 } },
+  { name: 'Shrugs', muscles: { traps:1.0 } },
+  { name: 'Reverse fly', muscles: { shoulders:1.0, mid_back:0.5 } },
+  // Shoulders
+  { name: 'Dumbbell shoulder press', muscles: { shoulders:1.0, triceps:0.4 } },
+  { name: 'Front raise', muscles: { shoulders:1.0 } },
+  { name: 'Arnold press', muscles: { shoulders:1.0, triceps:0.4 } },
+  // Biceps
+  { name: 'Cable bicep curl', muscles: { biceps:1.0 } },
+  { name: 'Concentration curl', muscles: { biceps:1.0 } },
+  { name: 'Incline dumbbell curl', muscles: { biceps:1.0 } },
+  { name: 'Spider curl', muscles: { biceps:1.0 } },
+  // Triceps
+  { name: 'Cable tricep pushdown', muscles: { triceps:1.0 } },
+  { name: 'Overhead tricep extension', muscles: { triceps:1.0 } },
+  { name: 'Skull crusher', muscles: { triceps:1.0 } },
+  { name: 'Close-grip bench press', muscles: { triceps:1.0, chest:0.5 } },
+  // Core
+  { name: 'Plank', muscles: { abs:1.0 } },
+  { name: 'Hanging leg raise', muscles: { abs:1.0 } },
+  { name: 'Cable woodchop', muscles: { abs:1.0 } },
+  { name: 'Russian twist', muscles: { abs:1.0 } },
+  { name: 'Decline sit-up', muscles: { abs:1.0 } },
+  // Legs
+  { name: 'Romanian deadlift', muscles: { hamstrings:1.0, glutes:0.7 } },
+  { name: 'Bulgarian split squat', muscles: { quads:0.8, glutes:0.7, hamstrings:0.3 } },
+  { name: 'Walking lunge', muscles: { quads:0.8, glutes:0.7 } },
+  { name: 'Glute bridge', muscles: { glutes:1.0, hamstrings:0.4 } },
+  { name: 'Hip thrust', muscles: { glutes:1.0, hamstrings:0.5 } },
+  { name: 'Goblet squat', muscles: { quads:1.0, glutes:0.5 } },
+  { name: 'Standing calf raise', muscles: { calves:1.0 } },
+  { name: 'Seated calf raise', muscles: { calves:1.0 } },
+  { name: 'Cable kickback', muscles: { glutes:1.0 } }
+];
 
 // ============================================================
 // SCHEDULE — Upper B and Lower B SWAPPED
@@ -1022,6 +1336,7 @@ function defaultState() {
   return {
     weekType: 'A',
     weekTypeChangedAt: null,
+    weekOffset: 0,
     workouts: {},   // keyed by ISO date YYYY-MM-DD
     bodyWeight: [], // [{date, weight}]
     openDays: {},   // keyed by date — UI state for which day cards are open
@@ -1072,13 +1387,13 @@ function fmtDate(d) {
 }
 
 // Returns { Mon: '2026-05-11', Tue: '...', ..., Sun: '...' }
-function getCurrentWeekDates() {
+function getCurrentWeekDates(offsetWeeks = 0) {
   const today = new Date();
   const dow = today.getDay(); // 0=Sun..6=Sat
   const diffToMonday = dow === 0 ? -6 : 1 - dow;
   const monday = new Date(today);
   monday.setHours(0,0,0,0);
-  monday.setDate(today.getDate() + diffToMonday);
+  monday.setDate(today.getDate() + diffToMonday + (offsetWeeks * 7));
   const out = {};
   DAY_KEYS_MON_FIRST.forEach((dk, i) => {
     const d = new Date(monday);
@@ -1302,10 +1617,547 @@ function ensureWorkoutEntry(date, dk) {
       lift: SCHEDULE[state.weekType][dk].lift,
       sets: {},
       cardio: { swimDone: false, saunaDone: false, pickleballDone: false, hikeDone: false },
-      notes: ''
+      notes: '',
+      customExercises: []
     };
   }
+  if (!state.workouts[date].customExercises) state.workouts[date].customExercises = [];
   return state.workouts[date];
+}
+
+// ============================================================
+// MUSCLE VOLUME, SUGGESTIONS, BODY SVG, CUSTOM EXERCISES
+// ============================================================
+function getExercisesForDay(date) {
+  // Returns all exercises (planned + custom) for a date
+  const data = state.workouts[date];
+  if (!data) return [];
+  const liftKey = data.lift || SCHEDULE[data.weekType || state.weekType][data.day || todayKey()].lift;
+  const wo = WORKOUTS[liftKey];
+  const planned = wo && wo.exercises ? wo.exercises : [];
+  const custom = data.customExercises || [];
+  return [...planned, ...custom];
+}
+
+function findAnyExerciseDef(exId, date) {
+  // Try planned for the date
+  if (date && state.workouts[date]) {
+    const exs = getExercisesForDay(date);
+    const found = exs.find(e => e.id === exId);
+    if (found) return found;
+  }
+  // Try all workout templates
+  for (const k of ['upperA','lowerA','upperB','lowerB']) {
+    const ex = WORKOUTS[k].exercises.find(e => e.id === exId);
+    if (ex) return ex;
+  }
+  // Search all custom exercises across days
+  for (const d in state.workouts) {
+    const c = (state.workouts[d].customExercises || []).find(e => e.id === exId);
+    if (c) return c;
+  }
+  return null;
+}
+
+function getMuscleVolumeForRange(start, end) {
+  const volume = {};
+  Object.keys(MUSCLES).forEach(m => volume[m] = 0);
+  Object.entries(state.workouts).forEach(([date, w]) => {
+    if (date < start || date > end) return;
+    Object.entries(w.sets || {}).forEach(([exId, exSets]) => {
+      const doneCount = exSets.filter(s => s.done).length;
+      if (doneCount === 0) return;
+      const ex = findAnyExerciseDef(exId, date);
+      if (!ex || !ex.muscles) return;
+      Object.entries(ex.muscles).forEach(([muscle, weight]) => {
+        if (volume[muscle] === undefined) volume[muscle] = 0;
+        volume[muscle] += doneCount * weight;
+      });
+    });
+  });
+  return volume;
+}
+
+function getMuscleIntensity(volume, muscle) {
+  const target = MUSCLE_TARGETS[muscle] || 1;
+  const ratio = (volume[muscle] || 0) / target;
+  if (ratio >= 1.0) return 4;
+  if (ratio >= 0.7) return 3;
+  if (ratio >= 0.4) return 2;
+  if (ratio > 0)    return 1;
+  return 0;
+}
+
+function buildBodySVG(volume) {
+  const at = (m) => `data-i="${getMuscleIntensity(volume, m)}" data-muscle="${m}"`;
+  return `<svg viewBox="0 0 240 320" class="body-svg" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <ellipse class="silhouette" cx="60" cy="22" rx="14" ry="16"/>
+      <rect class="silhouette" x="55" y="36" width="10" height="8"/>
+      <path class="silhouette" d="M 36 44 Q 36 38 42 38 L 78 38 Q 84 38 84 44 L 88 100 Q 86 115 80 118 L 80 165 Q 78 168 75 168 L 45 168 Q 42 168 40 165 L 40 118 Q 34 115 32 100 Z"/>
+      <path class="silhouette" d="M 32 50 Q 22 55 20 80 L 16 145 Q 14 158 20 162 Q 24 160 26 145 L 30 90 Q 34 60 34 50 Z"/>
+      <path class="silhouette" d="M 88 50 Q 98 55 100 80 L 104 145 Q 106 158 100 162 Q 96 160 94 145 L 90 90 Q 86 60 86 50 Z"/>
+      <path class="silhouette" d="M 42 168 L 38 280 Q 38 286 44 286 L 56 286 Q 60 286 60 280 L 62 168 Z"/>
+      <path class="silhouette" d="M 78 168 L 82 280 Q 82 286 76 286 L 64 286 Q 60 286 60 280 L 58 168 Z"/>
+      <ellipse cx="50" cy="65" rx="11" ry="12" class="m" ${at('chest')}/>
+      <ellipse cx="70" cy="65" rx="11" ry="12" class="m" ${at('chest')}/>
+      <ellipse cx="36" cy="50" rx="9" ry="7" class="m" ${at('shoulders')}/>
+      <ellipse cx="84" cy="50" rx="9" ry="7" class="m" ${at('shoulders')}/>
+      <ellipse cx="24" cy="95" rx="9" ry="15" class="m" ${at('biceps')}/>
+      <ellipse cx="96" cy="95" rx="9" ry="15" class="m" ${at('biceps')}/>
+      <ellipse cx="19" cy="140" rx="7" ry="15" class="m" ${at('forearms')}/>
+      <ellipse cx="101" cy="140" rx="7" ry="15" class="m" ${at('forearms')}/>
+      <rect x="50" y="88" width="20" height="65" rx="7" class="m" ${at('abs')}/>
+      <ellipse cx="48" cy="200" rx="13" ry="22" class="m" ${at('quads')}/>
+      <ellipse cx="72" cy="200" rx="13" ry="22" class="m" ${at('quads')}/>
+      <ellipse cx="60" cy="195" rx="4" ry="18" class="m" ${at('adductors')}/>
+      <ellipse cx="48" cy="258" rx="8" ry="20" class="m" ${at('calves')}/>
+      <ellipse cx="72" cy="258" rx="8" ry="20" class="m" ${at('calves')}/>
+    </g>
+    <g transform="translate(120, 0)">
+      <ellipse class="silhouette" cx="60" cy="22" rx="14" ry="16"/>
+      <rect class="silhouette" x="55" y="36" width="10" height="8"/>
+      <path class="silhouette" d="M 36 44 Q 36 38 42 38 L 78 38 Q 84 38 84 44 L 88 100 Q 86 115 80 118 L 80 165 Q 78 168 75 168 L 45 168 Q 42 168 40 165 L 40 118 Q 34 115 32 100 Z"/>
+      <path class="silhouette" d="M 32 50 Q 22 55 20 80 L 16 145 Q 14 158 20 162 Q 24 160 26 145 L 30 90 Q 34 60 34 50 Z"/>
+      <path class="silhouette" d="M 88 50 Q 98 55 100 80 L 104 145 Q 106 158 100 162 Q 96 160 94 145 L 90 90 Q 86 60 86 50 Z"/>
+      <path class="silhouette" d="M 42 168 L 38 280 Q 38 286 44 286 L 56 286 Q 60 286 60 280 L 62 168 Z"/>
+      <path class="silhouette" d="M 78 168 L 82 280 Q 82 286 76 286 L 64 286 Q 60 286 60 280 L 58 168 Z"/>
+      <ellipse cx="60" cy="50" rx="18" ry="6" class="m" ${at('traps')}/>
+      <ellipse cx="36" cy="54" rx="9" ry="6" class="m" ${at('shoulders')}/>
+      <ellipse cx="84" cy="54" rx="9" ry="6" class="m" ${at('shoulders')}/>
+      <path class="m" ${at('lats')} d="M 40 65 L 58 65 L 56 105 L 38 112 Z"/>
+      <path class="m" ${at('lats')} d="M 80 65 L 62 65 L 64 105 L 82 112 Z"/>
+      <rect x="52" y="68" width="16" height="38" rx="3" class="m" ${at('mid_back')}/>
+      <ellipse cx="24" cy="95" rx="9" ry="15" class="m" ${at('triceps')}/>
+      <ellipse cx="96" cy="95" rx="9" ry="15" class="m" ${at('triceps')}/>
+      <ellipse cx="50" cy="170" rx="14" ry="13" class="m" ${at('glutes')}/>
+      <ellipse cx="70" cy="170" rx="14" ry="13" class="m" ${at('glutes')}/>
+      <ellipse cx="48" cy="215" rx="11" ry="22" class="m" ${at('hamstrings')}/>
+      <ellipse cx="72" cy="215" rx="11" ry="22" class="m" ${at('hamstrings')}/>
+      <ellipse cx="48" cy="258" rx="8" ry="20" class="m" ${at('calves')}/>
+      <ellipse cx="72" cy="258" rx="8" ry="20" class="m" ${at('calves')}/>
+    </g>
+    <text x="60" y="305" text-anchor="middle">Front</text>
+    <text x="180" y="305" text-anchor="middle">Back</text>
+  </svg>`;
+}
+
+function renderMuscleActivation() {
+  const range = getWeekRange(todayDate());
+  const volume = getMuscleVolumeForRange(range.start, range.end);
+  const maxV = Math.max(...Object.values(MUSCLE_TARGETS));
+
+  // List entries
+  const rows = Object.keys(MUSCLES).map(m => {
+    const sets = Math.round((volume[m] || 0) * 10) / 10;
+    const target = MUSCLE_TARGETS[m] || 0;
+    const pct = target > 0 ? Math.min(100, (sets / target) * 100) : 0;
+    const cls = pct >= 100 ? 'over' : (pct < 50 ? 'under' : '');
+    return `
+      <div class="muscle-row">
+        <span class="muscle-row-name">${MUSCLES[m].name}</span>
+        <div class="muscle-bar-track"><div class="muscle-bar-fill ${cls}" style="width:${pct}%"></div></div>
+        <span class="muscle-row-stat">${sets}<span class="target">/${target}</span></span>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('muscleCard').innerHTML = `
+    <div class="card">
+      <div class="card-title">Muscle Activation · This Week</div>
+      <div class="muscle-body-wrap">${buildBodySVG(volume)}</div>
+      <div class="muscle-list">${rows}</div>
+      <div style="font-size:11px; color:var(--text-tertiary); margin-top:10px;">
+        Bars show weekly volume (effective sets) vs target. Body diagram intensity:
+        <span style="color: rgba(48,209,88,0.4)">▮</span> low
+        <span style="color: rgba(48,209,88,0.6)">▮</span> medium
+        <span style="color: rgba(48,209,88,0.8)">▮</span> high
+        <span style="color: rgba(48,209,88,1)">▮</span> target met
+      </div>
+    </div>
+  `;
+}
+
+function renderWeekNav() {
+  const range = getWeekRange(localDateStr(weekOffsetDate(state.weekOffset || 0)));
+  const today = todayDate();
+  const isCurrentWeek = (state.weekOffset || 0) === 0;
+  document.getElementById('weekNav').innerHTML = `
+    <button class="week-nav-btn" onclick="changeWeek(-1)">← Prev</button>
+    <div class="week-nav-label">${isCurrentWeek ? 'This Week' : (state.weekOffset > 0 ? '+' : '') + state.weekOffset + ' wk'} · ${fmtDateShort(range.start)} – ${fmtDateShort(range.end)}</div>
+    <button class="week-nav-btn" onclick="changeWeek(1)" ${isCurrentWeek ? '' : ''}>Next →</button>
+  `;
+  // Add "Today" button if not on current week
+  if (!isCurrentWeek) {
+    document.getElementById('weekNav').insertAdjacentHTML('beforeend',
+      `<button class="week-nav-btn" onclick="changeWeek(0, true)" style="margin-left:8px;">Today</button>`);
+  }
+}
+
+function weekOffsetDate(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset * 7);
+  return d;
+}
+
+function changeWeek(delta, jumpToToday) {
+  if (jumpToToday) state.weekOffset = 0;
+  else state.weekOffset = (state.weekOffset || 0) + delta;
+  saveState();
+  renderWeek();
+}
+
+// ============================================================
+// MISSED DAYS / MAKEUP LOGIC
+// ============================================================
+function getMissedLiftDays(referenceDate) {
+  // Returns past lift days within the last 7 days that are <30% complete
+  const today = referenceDate || todayDate();
+  const todayD = new Date(today + 'T00:00:00');
+  const sevenAgo = new Date(todayD);
+  sevenAgo.setDate(todayD.getDate() - 7);
+  const sevenAgoStr = localDateStr(sevenAgo);
+
+  const missed = [];
+  Object.entries(state.workouts).forEach(([date, w]) => {
+    if (date >= today) return; // today and future excluded
+    if (date < sevenAgoStr) return; // too old
+    const liftKey = w.lift;
+    const wo = WORKOUTS[liftKey];
+    if (!wo || !wo.exercises) return; // only lift days qualify
+    // Compute completion vs expected (planned + any custom)
+    const all = [...wo.exercises, ...(w.customExercises || [])];
+    let totalSets = 0, setsLogged = 0;
+    all.forEach(ex => {
+      totalSets += ex.sets;
+      setsLogged += (w.sets[ex.id] || []).filter(s => s.done).length;
+    });
+    const pct = totalSets ? setsLogged / totalSets : 0;
+    if (pct < 0.3) {
+      const missedMuscles = {};
+      all.forEach(ex => {
+        const done = (w.sets[ex.id] || []).filter(s => s.done).length;
+        const remaining = ex.sets - done;
+        if (remaining > 0 && ex.muscles) {
+          Object.entries(ex.muscles).forEach(([m, wt]) => {
+            missedMuscles[m] = (missedMuscles[m] || 0) + remaining * wt;
+          });
+        }
+      });
+      missed.push({ date, dayKey: w.day, liftKey, name: wo.name, pct, setsLogged, totalSets, missedMuscles });
+    }
+  });
+  return missed.sort((a,b) => a.date.localeCompare(b.date));
+}
+
+function getTotalMissedMuscles(referenceDate) {
+  const missed = getMissedLiftDays(referenceDate);
+  const total = {};
+  missed.forEach(m => {
+    Object.entries(m.missedMuscles).forEach(([muscle, vol]) => {
+      total[muscle] = (total[muscle] || 0) + vol;
+    });
+  });
+  return total;
+}
+
+function renderMakeupCard() {
+  const el = document.getElementById('makeupCard');
+  if (!el) return;
+  // Only show on current week (offset 0)
+  if ((state.weekOffset || 0) !== 0) { el.innerHTML = ''; return; }
+
+  const missed = getMissedLiftDays();
+  if (!missed.length) { el.innerHTML = ''; return; }
+
+  const totalMissed = getTotalMissedMuscles();
+  const topMuscles = Object.entries(totalMissed)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([m, vol]) => `<span style="display:inline-block; padding:3px 9px; background:rgba(255,159,10,0.15); color:var(--warning); border-radius:999px; font-size:11px; font-weight:600; margin:2px 4px 2px 0;">${MUSCLES[m]?.name || m} +${Math.round(vol*10)/10}</span>`)
+    .join('');
+
+  el.innerHTML = `
+    <div class="card" style="border-color: rgba(255,159,10,0.4); background: linear-gradient(135deg, rgba(255, 159, 10, 0.08), rgba(255, 55, 95, 0.03));">
+      <div class="card-title" style="color: var(--warning);">⏪ Makeup Needed · Past 7 days</div>
+      <div style="font-size: 13px; color: var(--text); margin-bottom: 10px;">
+        ${missed.length} missed lift day${missed.length>1?'s':''}:
+      </div>
+      <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.7;">
+        ${missed.map(m => `• <strong style="color:var(--text);">${FULL_DAY[m.dayKey]}</strong> (${fmtDateShort(m.date)}) — ${m.name} · ${m.setsLogged}/${m.totalSets} sets`).join('<br>')}
+      </div>
+      <div style="font-size: 11px; font-weight:700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+        Missed volume to make up:
+      </div>
+      <div style="margin-bottom: 8px;">${topMuscles}</div>
+      <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 6px;">
+        💡 Suggestions on upcoming lift days now include exercises tagged <span style="color:var(--warning); font-weight:600;">⏪ Makeup</span> to recover this volume.
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// SUGGESTIONS — based on weekly muscle gaps
+// ============================================================
+function getSuggestionsForDay(date) {
+  const range = getWeekRange(date);
+  const volume = getMuscleVolumeForRange(range.start, range.end);
+  const dayData = state.workouts[date];
+  if (!dayData) return [];
+
+  // Pull in missed-day volume (only counts for current-or-future days, not past dates)
+  const todayStr = todayDate();
+  const missedMuscles = (date >= todayStr) ? getTotalMissedMuscles() : {};
+
+  // Identify gaps: weekly target deficit + missed-day extra deficit
+  const gaps = [];
+  Object.entries(MUSCLE_TARGETS).forEach(([muscle, target]) => {
+    const current = volume[muscle] || 0;
+    const missed = missedMuscles[muscle] || 0;
+    const effectiveTarget = target + missed * 0.5; // catch up half of missed volume across week
+    if (target > 0 && current < effectiveTarget) {
+      gaps.push({
+        muscle,
+        deficit: effectiveTarget - current,
+        isMakeup: missed > 0 && (target - current <= 0 || missed > target - current)
+      });
+    }
+  });
+  if (!gaps.length) return [];
+  gaps.sort((a,b) => b.deficit - a.deficit);
+
+  // Determine focus: which body region matches this day's workout
+  const liftKey = dayData.lift;
+  const wo = WORKOUTS[liftKey];
+  let dayMuscles = new Set();
+  if (wo && wo.exercises) {
+    wo.exercises.forEach(ex => {
+      if (ex.muscles) Object.keys(ex.muscles).forEach(m => dayMuscles.add(m));
+    });
+  }
+  const customs = (dayData.customExercises || []);
+  customs.forEach(ex => {
+    if (ex.muscles) Object.keys(ex.muscles).forEach(m => dayMuscles.add(m));
+  });
+
+  const existingNames = new Set();
+  if (wo && wo.exercises) wo.exercises.forEach(e => existingNames.add(e.name.toLowerCase()));
+  customs.forEach(e => existingNames.add(e.name.toLowerCase()));
+
+  const scored = [];
+  EXERCISE_LIBRARY.forEach(ex => {
+    if (existingNames.has(ex.name.toLowerCase())) return;
+    let score = 0;
+    let regionMatch = false;
+    let makeupHit = false;
+    Object.entries(ex.muscles).forEach(([m, w]) => {
+      const gap = gaps.find(g => g.muscle === m);
+      if (gap) {
+        score += w * gap.deficit;
+        if (gap.isMakeup) makeupHit = true;
+      }
+      if (dayMuscles.has(m)) regionMatch = true;
+    });
+    if (score > 0 && regionMatch) {
+      scored.push({ ...ex, score, isMakeup: makeupHit });
+    }
+  });
+  scored.sort((a,b) => {
+    // Prioritize makeup suggestions
+    if (a.isMakeup !== b.isMakeup) return a.isMakeup ? -1 : 1;
+    return b.score - a.score;
+  });
+  return scored.slice(0, 3);
+}
+
+function buildSuggestionsHTML(date) {
+  const suggestions = getSuggestionsForDay(date);
+  if (!suggestions.length) return '';
+  return `
+    <div style="margin-top:14px;">
+      <div style="font-size:11px; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">
+        💡 Suggested (fills weekly gaps)
+      </div>
+      <div class="suggestion-list">
+        ${suggestions.map(s => `
+          <div class="suggestion-item" ${s.isMakeup ? 'style="border-color: rgba(255,159,10,0.4);"' : ''}>
+            <div class="suggestion-info">
+              <div class="suggestion-name">${s.name}${s.isMakeup ? ' <span style="display:inline-block; padding:1px 6px; background:rgba(255,159,10,0.2); color:var(--warning); border-radius:999px; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-left:6px; vertical-align:middle;">⏪ Makeup</span>' : ''}</div>
+              <div class="suggestion-muscle">Targets: ${Object.keys(s.muscles).map(m => MUSCLES[m]?.name || m).join(', ')}</div>
+            </div>
+            <button class="suggestion-add" onclick="quickAddSuggested('${date}','${s.name.replace(/'/g, "\\'")}')">+ Add</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function quickAddSuggested(date, name) {
+  const ex = EXERCISE_LIBRARY.find(e => e.name === name);
+  if (!ex) return;
+  const newEx = {
+    id: 'custom_' + Date.now(),
+    name: ex.name,
+    sets: 3,
+    reps: '10–12',
+    rest: '60–90s',
+    rpe: '8',
+    type: 'isolation',
+    muscles: ex.muscles,
+    custom: true
+  };
+  const dayData = ensureWorkoutEntry(date, JS_TO_KEY[new Date(date+'T00:00:00').getDay()]);
+  dayData.customExercises.push(newEx);
+  dayData.sets[newEx.id] = Array.from({length: newEx.sets}, () => ({ weight:'', reps:'', rpe:'', done:false }));
+  saveState();
+  renderWeek();
+  showToast(`Added ${ex.name}`, 'success');
+}
+
+// ============================================================
+// ADD CUSTOM EXERCISE MODAL
+// ============================================================
+let addExModalState = { date: null, selectedMuscles: new Set() };
+
+function openAddExerciseModal(date) {
+  addExModalState = { date, selectedMuscles: new Set() };
+  const modal = document.getElementById('modal');
+  document.getElementById('modalTitle').textContent = 'Add Exercise';
+  document.getElementById('modalText').innerHTML = `
+    <div class="add-ex-form">
+      <div>
+        <label>Search library or type custom name</label>
+        <input id="addExName" placeholder="e.g., Cable crossover" oninput="filterExLibrary(this.value)" autocomplete="off">
+      </div>
+      <div id="libResults" style="max-height:140px; overflow-y:auto;"></div>
+      <div class="form-grid-3">
+        <div>
+          <label>Sets</label>
+          <input id="addExSets" type="number" value="3" min="1" max="10" inputmode="numeric">
+        </div>
+        <div>
+          <label>Reps</label>
+          <input id="addExReps" value="10–12">
+        </div>
+        <div>
+          <label>RPE</label>
+          <input id="addExRpe" value="8" inputmode="decimal">
+        </div>
+      </div>
+      <div>
+        <label>Target muscles (click to toggle)</label>
+        <div class="muscle-pick" id="musclePick">
+          ${Object.keys(MUSCLES).map(m => `<button class="muscle-chip" data-muscle="${m}" onclick="toggleMuscleChip('${m}')">${MUSCLES[m].name}</button>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalConfirm').textContent = 'Add';
+  document.getElementById('modalConfirm').onclick = saveCustomExercise;
+  document.getElementById('modalCancel').style.display = '';
+  modal.classList.add('show');
+}
+
+function filterExLibrary(query) {
+  const q = (query || '').toLowerCase().trim();
+  const results = document.getElementById('libResults');
+  if (!q) { results.innerHTML = ''; return; }
+  const matches = EXERCISE_LIBRARY.filter(e => e.name.toLowerCase().includes(q)).slice(0, 5);
+  if (!matches.length) { results.innerHTML = '<div style="font-size:12px; color:var(--text-tertiary); padding:4px;">No matches — will be added as a custom exercise</div>'; return; }
+  results.innerHTML = matches.map(e => `
+    <div class="lib-result" onclick="pickFromLibrary('${e.name.replace(/'/g, "\\'")}')">
+      <div>${e.name}</div>
+      <div class="muscles-mini">Targets: ${Object.keys(e.muscles).map(m => MUSCLES[m]?.name || m).join(', ')}</div>
+    </div>
+  `).join('');
+}
+
+function pickFromLibrary(name) {
+  const ex = EXERCISE_LIBRARY.find(e => e.name === name);
+  if (!ex) return;
+  document.getElementById('addExName').value = ex.name;
+  document.getElementById('libResults').innerHTML = '';
+  // Pre-select muscles from library
+  addExModalState.selectedMuscles = new Set(Object.keys(ex.muscles));
+  document.querySelectorAll('#musclePick .muscle-chip').forEach(chip => {
+    chip.classList.toggle('selected', addExModalState.selectedMuscles.has(chip.dataset.muscle));
+  });
+}
+
+function toggleMuscleChip(muscle) {
+  if (addExModalState.selectedMuscles.has(muscle)) addExModalState.selectedMuscles.delete(muscle);
+  else addExModalState.selectedMuscles.add(muscle);
+  document.querySelector(`#musclePick .muscle-chip[data-muscle="${muscle}"]`).classList.toggle('selected');
+}
+
+function saveCustomExercise() {
+  const name = document.getElementById('addExName').value.trim();
+  const sets = parseInt(document.getElementById('addExSets').value) || 3;
+  const reps = document.getElementById('addExReps').value.trim() || '10–12';
+  const rpe = document.getElementById('addExRpe').value.trim() || '8';
+  if (!name) { showToast('Enter an exercise name'); return; }
+
+  let muscleMap;
+  // If from library, use library muscles
+  const lib = EXERCISE_LIBRARY.find(e => e.name.toLowerCase() === name.toLowerCase());
+  if (lib && addExModalState.selectedMuscles.size === 0) {
+    muscleMap = lib.muscles;
+  } else if (addExModalState.selectedMuscles.size > 0) {
+    muscleMap = {};
+    addExModalState.selectedMuscles.forEach(m => muscleMap[m] = 1.0);
+  } else if (lib) {
+    muscleMap = lib.muscles;
+  } else {
+    showToast('Pick at least one muscle');
+    return;
+  }
+
+  const newEx = {
+    id: 'custom_' + Date.now(),
+    name,
+    sets,
+    reps,
+    rest: '60–90s',
+    rpe,
+    type: 'isolation',
+    muscles: muscleMap,
+    custom: true
+  };
+  const date = addExModalState.date;
+  const dayData = ensureWorkoutEntry(date, JS_TO_KEY[new Date(date+'T00:00:00').getDay()]);
+  dayData.customExercises.push(newEx);
+  dayData.sets[newEx.id] = Array.from({length: newEx.sets}, () => ({ weight:'', reps:'', rpe:'', done:false }));
+  saveState();
+  closeModal();
+  renderWeek();
+  showToast(`Added ${name}`, 'success');
+}
+
+function removeCustomExercise(date, exId) {
+  const dayData = state.workouts[date];
+  if (!dayData) return;
+  dayData.customExercises = dayData.customExercises.filter(e => e.id !== exId);
+  delete dayData.sets[exId];
+  saveState();
+  rerenderDay(date);
+  renderMuscleActivation();
+  renderWeekSummary();
+}
+
+function confirmRemoveCustom(date, exId, name) {
+  event.stopPropagation();
+  showModal({
+    title: 'Remove exercise?',
+    text: `Remove "${name}" from this day? Logged sets will be deleted.`,
+    confirmText: 'Remove',
+    onConfirm: () => {
+      removeCustomExercise(date, exId);
+      closeModal();
+      showToast('Removed', 'success');
+    }
+  });
 }
 
 function lastSessionFor(exerciseId, beforeDate) {
@@ -1343,7 +2195,7 @@ function buildExerciseHTML(ex, date, exData, isOpen) {
     <div class="exercise ${allDone ? 'complete' : ''} ${isOpen ? 'open' : ''}" data-ex="${ex.id}">
       <div class="exercise-header" onclick="toggleExercise('${date}','${ex.id}')">
         <div class="exercise-info">
-          <div class="exercise-name">${ex.name}${ex.optional ? ' <span style="font-size:10px; color: var(--text-tertiary);">(optional)</span>' : ''}</div>
+          <div class="exercise-name">${ex.name}${ex.optional ? ' <span style="font-size:10px; color: var(--text-tertiary);">(optional)</span>' : ''}${ex.custom ? '<span class="custom-badge">Custom</span>' : ''}</div>
           <div class="exercise-meta">
             <span>${ex.sets} × ${ex.reps}</span>
             <span>· Rest ${ex.rest}</span>
@@ -1353,6 +2205,7 @@ function buildExerciseHTML(ex, date, exData, isOpen) {
         <div class="completion-ring">${allDone ? '✓' : ''}</div>
       </div>
       <div class="exercise-body">
+        ${ex.custom ? `<div style="text-align:right; margin-bottom:4px;"><button class="ex-remove-btn" onclick="confirmRemoveCustom('${date}','${ex.id}','${ex.name.replace(/'/g, "\\'")}')">Remove</button></div>` : ''}
         ${tip ? `<div class="last-session tip">${tip}</div>` : ''}
         ${last ? `<div class="last-session">📊 Last (${fmtDateShort(last.date)}): ${last.sets.map(s => `${s.weight}lbs×${s.reps}${s.rpe ? ' @' + s.rpe : ''}`).join(' · ')}</div>` : `<div class="last-session">First time on this exercise</div>`}
         <div class="sets-table">
@@ -1461,11 +2314,15 @@ function buildDayCardHTML(dk, date) {
   const wo = WORKOUTS[liftKey];
   const dayData = ensureWorkoutEntry(date, dk);
   dayData._date = date;
+  const customExs = dayData.customExercises || [];
+
+  // Combined exercise list (planned + custom)
+  const allExercises = wo.exercises ? [...wo.exercises, ...customExs] : [];
 
   // Stats
   let setsLogged = 0, totalSets = 0, allComplete = false;
-  if (wo.exercises) {
-    wo.exercises.forEach(ex => {
+  if (allExercises.length) {
+    allExercises.forEach(ex => {
       totalSets += ex.sets;
       if (!dayData.sets[ex.id]) {
         dayData.sets[ex.id] = Array.from({length: ex.sets}, () => ({ weight:'', reps:'', rpe:'', done:false }));
@@ -1477,7 +2334,6 @@ function buildDayCardHTML(dk, date) {
     const cardioField = liftKey === 'pickleball' ? 'pickleballDone' : 'hikeDone';
     allComplete = dayData.cardio[cardioField];
   } else {
-    // Rest day — complete if both swim (if any) and sauna (if any) are done
     const swimReq = !!plan.amSwim;
     const saunaReq = plan.sauna && plan.sauna !== 'skip';
     const swimOk = !swimReq || dayData.cardio.swimDone;
@@ -1489,18 +2345,20 @@ function buildDayCardHTML(dk, date) {
 
   let pill = '';
   if (allComplete) pill = `<span class="progress-pill complete">✓ Complete</span>`;
-  else if (wo.exercises && setsLogged > 0) pill = `<span class="progress-pill">${setsLogged}/${totalSets} sets</span>`;
-  else if (wo.exercises) pill = `<span class="progress-pill">${totalSets} sets</span>`;
+  else if (allExercises.length && setsLogged > 0) pill = `<span class="progress-pill">${setsLogged}/${totalSets} sets</span>`;
+  else if (allExercises.length) pill = `<span class="progress-pill">${totalSets} sets</span>`;
   else if (wo.cardio) pill = `<span class="progress-pill">Cardio</span>`;
   else pill = `<span class="progress-pill">Rest</span>`;
 
   let body = '';
-  if (wo.exercises) {
+  if (allExercises.length || wo.exercises) {
     body += buildCardioHTML(plan, dayData, false, false);
-    body += wo.exercises.map(ex => {
+    body += allExercises.map(ex => {
       const isOpenEx = state.openExercises[date + '-' + ex.id] || false;
       return buildExerciseHTML(ex, date, dayData.sets[ex.id], isOpenEx);
     }).join('');
+    body += `<button class="add-ex-btn" onclick="event.stopPropagation(); openAddExerciseModal('${date}')">+ Add exercise</button>`;
+    body += buildSuggestionsHTML(date);
   } else if (wo.cardio) {
     body += buildCardioHTML(plan, dayData, liftKey === 'pickleball', liftKey === 'hike');
   } else {
@@ -1538,13 +2396,17 @@ function renderWeek() {
     ? `Last: ${lastBW.weight} kg on ${fmtDate(lastBW.date)}`
     : 'No entries yet — log your first weight above';
 
-  // Day list
-  const weekDates = getCurrentWeekDates();
+  // Day list (respects week offset for navigation)
+  const offset = state.weekOffset || 0;
+  const weekDates = getCurrentWeekDates(offset);
   const html = DAY_KEYS_MON_FIRST.map(dk => buildDayCardHTML(dk, weekDates[dk])).join('');
   document.getElementById('dayList').innerHTML = html;
 
-  // Week summary
+  // Week summary, muscle card, makeup card, week nav
   renderWeekSummary();
+  renderMuscleActivation();
+  renderMakeupCard();
+  renderWeekNav();
 }
 
 function toggleDay(date) {
@@ -1575,8 +2437,9 @@ function toggleSetDone(date, exId, idx) {
   if (!data) return;
   data.sets[exId][idx].done = !data.sets[exId][idx].done;
   saveState();
-  // Re-render just the day card
   rerenderDay(date);
+  renderMuscleActivation();
+  renderWeekSummary();
 }
 
 function toggleCardio(date, field, value) {
