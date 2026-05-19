@@ -1039,6 +1039,49 @@
   .lib-result:hover { border-color: var(--accent); }
   .lib-result .muscles-mini { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
 
+  /* Recommended (prefilled) inputs */
+  .set-input.is-rec {
+    color: var(--accent);
+    font-style: italic;
+    opacity: 0.7;
+  }
+  .set-input.is-rec:focus { opacity: 1; font-style: normal; }
+  .rec-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(10, 132, 255, 0.12);
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .rec-tag.up { background: rgba(48, 209, 88, 0.15); color: var(--success); }
+  .rec-tag.same { background: rgba(255, 159, 10, 0.12); color: var(--warning); }
+  .rec-tag.repeat { background: rgba(255, 69, 58, 0.12); color: var(--danger); }
+
+  .ex-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .ex-action-btn {
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+  }
+  .ex-action-btn:hover { background: var(--border-strong); color: var(--text); }
+  .ex-action-btn.danger:hover { background: rgba(255, 69, 58, 0.15); color: var(--danger); border-color: rgba(255, 69, 58, 0.4); }
+
   /* Mobile */
   @media (max-width: 480px) {
     .app { padding: 0 12px 100px; }
@@ -1618,10 +1661,12 @@ function ensureWorkoutEntry(date, dk) {
       sets: {},
       cardio: { swimDone: false, saunaDone: false, pickleballDone: false, hikeDone: false },
       notes: '',
-      customExercises: []
+      customExercises: [],
+      swappedOut: []
     };
   }
   if (!state.workouts[date].customExercises) state.workouts[date].customExercises = [];
+  if (!state.workouts[date].swappedOut) state.workouts[date].swappedOut = [];
   return state.workouts[date];
 }
 
@@ -2160,6 +2205,128 @@ function confirmRemoveCustom(date, exId, name) {
   });
 }
 
+// ============================================================
+// SWAP EXERCISE — replace an exercise with a different one
+// ============================================================
+let swapModalState = { date: null, oldExId: null, oldName: '', selectedMuscles: new Set() };
+
+function openSwapExerciseModal(date, oldExId, oldName) {
+  swapModalState = { date, oldExId, oldName, selectedMuscles: new Set() };
+  document.getElementById('modalTitle').textContent = `Swap "${oldName}"`;
+  document.getElementById('modalText').innerHTML = `
+    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">
+      Replace this exercise with a different one. Logged sets for "${oldName}" will be cleared.
+    </div>
+    <div class="add-ex-form">
+      <div>
+        <label>Search library or type custom name</label>
+        <input id="swapExName" placeholder="e.g., Cable crossover" oninput="filterSwapLibrary(this.value)" autocomplete="off">
+      </div>
+      <div id="swapLibResults" style="max-height:140px; overflow-y:auto;"></div>
+      <div class="form-grid-3">
+        <div><label>Sets</label><input id="swapExSets" type="number" value="3" min="1" max="10" inputmode="numeric"></div>
+        <div><label>Reps</label><input id="swapExReps" value="10–12"></div>
+        <div><label>RPE</label><input id="swapExRpe" value="8" inputmode="decimal"></div>
+      </div>
+      <div>
+        <label>Target muscles (click to toggle)</label>
+        <div class="muscle-pick" id="swapMusclePick">
+          ${Object.keys(MUSCLES).map(m => `<button class="muscle-chip" data-muscle="${m}" onclick="toggleSwapMuscleChip('${m}')">${MUSCLES[m].name}</button>`).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modalConfirm').textContent = 'Swap';
+  document.getElementById('modalConfirm').onclick = executeSwap;
+  document.getElementById('modalCancel').style.display = '';
+  document.getElementById('modal').classList.add('show');
+}
+
+function filterSwapLibrary(query) {
+  const q = (query || '').toLowerCase().trim();
+  const results = document.getElementById('swapLibResults');
+  if (!q) { results.innerHTML = ''; return; }
+  const matches = EXERCISE_LIBRARY.filter(e => e.name.toLowerCase().includes(q)).slice(0, 5);
+  if (!matches.length) { results.innerHTML = '<div style="font-size:12px; color:var(--text-tertiary); padding:4px;">No matches — will be added as a custom exercise</div>'; return; }
+  results.innerHTML = matches.map(e => `
+    <div class="lib-result" onclick="pickFromSwapLibrary('${e.name.replace(/'/g, "\\'")}')">
+      <div>${e.name}</div>
+      <div class="muscles-mini">Targets: ${Object.keys(e.muscles).map(m => MUSCLES[m]?.name || m).join(', ')}</div>
+    </div>
+  `).join('');
+}
+
+function pickFromSwapLibrary(name) {
+  const ex = EXERCISE_LIBRARY.find(e => e.name === name);
+  if (!ex) return;
+  document.getElementById('swapExName').value = ex.name;
+  document.getElementById('swapLibResults').innerHTML = '';
+  swapModalState.selectedMuscles = new Set(Object.keys(ex.muscles));
+  document.querySelectorAll('#swapMusclePick .muscle-chip').forEach(chip => {
+    chip.classList.toggle('selected', swapModalState.selectedMuscles.has(chip.dataset.muscle));
+  });
+}
+
+function toggleSwapMuscleChip(muscle) {
+  if (swapModalState.selectedMuscles.has(muscle)) swapModalState.selectedMuscles.delete(muscle);
+  else swapModalState.selectedMuscles.add(muscle);
+  document.querySelector(`#swapMusclePick .muscle-chip[data-muscle="${muscle}"]`).classList.toggle('selected');
+}
+
+function executeSwap() {
+  const name = document.getElementById('swapExName').value.trim();
+  const sets = parseInt(document.getElementById('swapExSets').value) || 3;
+  const reps = document.getElementById('swapExReps').value.trim() || '10–12';
+  const rpe = document.getElementById('swapExRpe').value.trim() || '8';
+  if (!name) { showToast('Enter an exercise name'); return; }
+
+  let muscleMap;
+  const lib = EXERCISE_LIBRARY.find(e => e.name.toLowerCase() === name.toLowerCase());
+  if (lib && swapModalState.selectedMuscles.size === 0) {
+    muscleMap = lib.muscles;
+  } else if (swapModalState.selectedMuscles.size > 0) {
+    muscleMap = {};
+    swapModalState.selectedMuscles.forEach(m => muscleMap[m] = 1.0);
+  } else if (lib) {
+    muscleMap = lib.muscles;
+  } else {
+    showToast('Pick at least one muscle');
+    return;
+  }
+
+  const newEx = {
+    id: 'custom_' + Date.now(),
+    name,
+    sets,
+    reps,
+    rest: '60–90s',
+    rpe,
+    type: 'isolation',
+    muscles: muscleMap,
+    custom: true
+  };
+  const { date, oldExId } = swapModalState;
+  const dayData = ensureWorkoutEntry(date, JS_TO_KEY[new Date(date+'T00:00:00').getDay()]);
+  if (!dayData.swappedOut) dayData.swappedOut = [];
+
+  // If old exercise was custom, remove it. If planned, add to swappedOut list.
+  const customIdx = dayData.customExercises.findIndex(e => e.id === oldExId);
+  if (customIdx >= 0) {
+    dayData.customExercises.splice(customIdx, 1);
+  } else {
+    if (!dayData.swappedOut.includes(oldExId)) dayData.swappedOut.push(oldExId);
+  }
+  // Clear logged sets for old exercise
+  delete dayData.sets[oldExId];
+  // Add replacement
+  dayData.customExercises.push(newEx);
+  dayData.sets[newEx.id] = Array.from({length: newEx.sets}, () => ({ weight:'', reps:'', rpe:'', done:false }));
+  saveState();
+  closeModal();
+  renderWeek();
+  showToast(`Swapped to ${name}`, 'success');
+}
+
 function lastSessionFor(exerciseId, beforeDate) {
   const dates = Object.keys(state.workouts).filter(d => d < beforeDate).sort().reverse();
   for (const d of dates) {
@@ -2170,6 +2337,85 @@ function lastSessionFor(exerciseId, beforeDate) {
     }
   }
   return null;
+}
+
+// ============================================================
+// SCIENTIFIC PROGRESSION ENGINE
+// ============================================================
+// Based on Schoenfeld, Helms, Israetel:
+// • Double progression (add reps to top of range → add weight, reset)
+// • Increment: lower-body compound +10 lb, upper compound +5 lb, isolation +5 lb
+// • Deload trigger: 2 consecutive sessions failing to hit bottom of rep range
+// • RPE target 8 (RIR 2) for most working sets, RPE 9 (RIR 1) for last set
+// ============================================================
+function parseRepRange(repsStr) {
+  if (!repsStr) return null;
+  const m = repsStr.match(/(\d+)\D+(\d+)/);
+  if (!m) {
+    const single = repsStr.match(/(\d+)/);
+    if (single) return { bottom: parseInt(single[1]), top: parseInt(single[1]) };
+    return null;
+  }
+  return { bottom: parseInt(m[1]), top: parseInt(m[2]) };
+}
+
+function getProgressionIncrement(ex) {
+  // Lower-body compounds (squat, hack squat, leg press, RDL) → +10 lb
+  // Upper-body compounds (bench, row, OHP) → +5 lb
+  // Isolations → +5 lb
+  if (ex.type === 'compound' && ex.muscles) {
+    const lower = ex.muscles.quads || ex.muscles.hamstrings || ex.muscles.glutes;
+    if (lower) return 10;
+  }
+  return 5;
+}
+
+function getRecommendationForExercise(ex, date) {
+  const last = lastSessionFor(ex.id, date);
+  const range = parseRepRange(ex.reps);
+  if (!last || !range) {
+    return { perSet: null, tag: null, tone: '' };
+  }
+  const sets = last.sets;
+  const lastW = parseFloat(sets[0].weight) || 0;
+  const repsList = sets.map(s => parseInt(s.reps) || 0);
+  const rpeList = sets.map(s => parseFloat(s.rpe) || 8);
+  const allAtTop = repsList.every(r => r >= range.top);
+  const anyBelowBot = repsList.some(r => r < range.bottom);
+  const avgRpe = rpeList.reduce((a,b) => a+b, 0) / rpeList.length;
+  const inc = getProgressionIncrement(ex);
+
+  let recWeight, perSet, tag, tone;
+
+  if (allAtTop && avgRpe <= 9) {
+    // STRONG progress → bump weight, reset to bottom of range
+    recWeight = lastW + inc;
+    perSet = Array.from({length: ex.sets}, () => ({ weight: recWeight, reps: range.bottom, rpe: '' }));
+    tag = `⬆ Weight up · +${inc} lbs (last session crushed it)`;
+    tone = 'up';
+  } else if (anyBelowBot || avgRpe >= 10) {
+    // STALLED → repeat same weight, aim for bottom of range cleanly
+    recWeight = lastW;
+    perSet = Array.from({length: ex.sets}, () => ({ weight: recWeight, reps: range.bottom, rpe: '' }));
+    tag = `↻ Repeat · last time was hard (RPE ${avgRpe.toFixed(1)})`;
+    tone = 'repeat';
+  } else {
+    // MID — same weight, push +1 rep per set toward top of range
+    recWeight = lastW;
+    perSet = repsList.map((lastReps, i) => {
+      // For sets beyond last session, repeat the last available value
+      if (i >= ex.sets) return null;
+      return { weight: recWeight, reps: Math.min(range.top, lastReps + 1), rpe: '' };
+    });
+    // If current ex has more sets than last (e.g., added a set), fill remaining
+    while (perSet.length < ex.sets) {
+      perSet.push({ weight: recWeight, reps: Math.min(range.top, (repsList[repsList.length-1] || range.bottom) + 1), rpe: '' });
+    }
+    tag = `→ Same weight · push +1 rep`;
+    tone = 'same';
+  }
+
+  return { perSet, tag, tone };
 }
 
 function progressionTip(exercise, lastSession) {
@@ -2189,7 +2435,7 @@ function progressionTip(exercise, lastSession) {
 
 function buildExerciseHTML(ex, date, exData, isOpen) {
   const last = lastSessionFor(ex.id, date);
-  const tip = progressionTip(ex, last);
+  const rec = getRecommendationForExercise(ex, date);
   const allDone = exData.every(s => s.done);
   return `
     <div class="exercise ${allDone ? 'complete' : ''} ${isOpen ? 'open' : ''}" data-ex="${ex.id}">
@@ -2205,28 +2451,40 @@ function buildExerciseHTML(ex, date, exData, isOpen) {
         <div class="completion-ring">${allDone ? '✓' : ''}</div>
       </div>
       <div class="exercise-body">
-        ${ex.custom ? `<div style="text-align:right; margin-bottom:4px;"><button class="ex-remove-btn" onclick="confirmRemoveCustom('${date}','${ex.id}','${ex.name.replace(/'/g, "\\'")}')">Remove</button></div>` : ''}
-        ${tip ? `<div class="last-session tip">${tip}</div>` : ''}
-        ${last ? `<div class="last-session">📊 Last (${fmtDateShort(last.date)}): ${last.sets.map(s => `${s.weight}lbs×${s.reps}${s.rpe ? ' @' + s.rpe : ''}`).join(' · ')}</div>` : `<div class="last-session">First time on this exercise</div>`}
+        <div class="ex-actions">
+          <button class="ex-action-btn" onclick="event.stopPropagation(); openSwapExerciseModal('${date}','${ex.id}','${ex.name.replace(/'/g, "\\'")}')">⇄ Swap</button>
+          ${ex.custom ? `<button class="ex-action-btn danger" onclick="event.stopPropagation(); confirmRemoveCustom('${date}','${ex.id}','${ex.name.replace(/'/g, "\\'")}')">Remove</button>` : ''}
+        </div>
+        ${rec.tag ? `<div class="rec-tag ${rec.tone}">${rec.tag}</div>` : ''}
+        ${last ? `<div class="last-session">📊 Last (${fmtDateShort(last.date)}): ${last.sets.map(s => `${s.weight}lbs×${s.reps}${s.rpe ? ' @' + s.rpe : ''}`).join(' · ')}</div>` : `<div class="last-session">First time on this exercise — log your numbers below</div>`}
         <div class="sets-table">
-          ${exData.map((s, sIdx) => `
-            <div class="set-row">
-              <div class="set-num">${sIdx+1}</div>
-              <div class="set-input-group">
-                <span class="label">Weight (lbs)</span>
-                <input class="set-input" type="number" step="0.5" value="${s.weight}" onchange="updateSet('${date}','${ex.id}',${sIdx},'weight',this.value)" inputmode="decimal">
+          ${exData.map((s, sIdx) => {
+            const recSet = rec.perSet ? rec.perSet[sIdx] : null;
+            const noLogYet = !s.weight && !s.reps && !s.done;
+            const showRec = noLogYet && recSet;
+            const wVal = s.weight !== '' && s.weight != null ? s.weight : (showRec ? recSet.weight : '');
+            const rVal = s.reps !== '' && s.reps != null ? s.reps : (showRec ? recSet.reps : '');
+            const rpeVal = s.rpe;  // never prefill RPE — user-reported
+            const isRec = showRec ? 'is-rec' : '';
+            return `
+              <div class="set-row" data-key="${date}-${ex.id}-${sIdx}">
+                <div class="set-num">${sIdx+1}</div>
+                <div class="set-input-group">
+                  <span class="label">Weight (lbs)</span>
+                  <input class="set-input ${isRec}" data-field="weight" type="number" step="0.5" value="${wVal}" oninput="this.classList.remove('is-rec'); updateSet('${date}','${ex.id}',${sIdx},'weight',this.value)" inputmode="decimal">
+                </div>
+                <div class="set-input-group">
+                  <span class="label">Reps</span>
+                  <input class="set-input ${isRec}" data-field="reps" type="number" value="${rVal}" oninput="this.classList.remove('is-rec'); updateSet('${date}','${ex.id}',${sIdx},'reps',this.value)" inputmode="numeric">
+                </div>
+                <div class="set-input-group">
+                  <span class="label">RPE</span>
+                  <input class="set-input" data-field="rpe" type="number" min="1" max="10" step="0.5" value="${rpeVal}" oninput="updateSet('${date}','${ex.id}',${sIdx},'rpe',this.value)" inputmode="decimal">
+                </div>
+                <div class="set-check ${s.done ? 'checked' : ''}" onclick="toggleSetDone('${date}','${ex.id}',${sIdx})">${s.done ? '✓' : ''}</div>
               </div>
-              <div class="set-input-group">
-                <span class="label">Reps</span>
-                <input class="set-input" type="number" value="${s.reps}" onchange="updateSet('${date}','${ex.id}',${sIdx},'reps',this.value)" inputmode="numeric">
-              </div>
-              <div class="set-input-group">
-                <span class="label">RPE</span>
-                <input class="set-input" type="number" min="1" max="10" step="0.5" value="${s.rpe}" onchange="updateSet('${date}','${ex.id}',${sIdx},'rpe',this.value)" inputmode="decimal">
-              </div>
-              <div class="set-check ${s.done ? 'checked' : ''}" onclick="toggleSetDone('${date}','${ex.id}',${sIdx})">${s.done ? '✓' : ''}</div>
-            </div>
-          `).join('')}
+            `;
+          }).join('')}
         </div>
       </div>
     </div>
@@ -2315,9 +2573,11 @@ function buildDayCardHTML(dk, date) {
   const dayData = ensureWorkoutEntry(date, dk);
   dayData._date = date;
   const customExs = dayData.customExercises || [];
+  const swappedOut = dayData.swappedOut || [];
 
-  // Combined exercise list (planned + custom)
-  const allExercises = wo.exercises ? [...wo.exercises, ...customExs] : [];
+  // Combined exercise list (planned minus swapped-out + custom)
+  const plannedFiltered = wo.exercises ? wo.exercises.filter(e => !swappedOut.includes(e.id)) : [];
+  const allExercises = wo.exercises ? [...plannedFiltered, ...customExs] : [];
 
   // Stats
   let setsLogged = 0, totalSets = 0, allComplete = false;
@@ -2435,6 +2695,16 @@ function updateSet(date, exId, idx, field, value) {
 function toggleSetDone(date, exId, idx) {
   const data = state.workouts[date];
   if (!data) return;
+  // Read current input values from DOM so prefilled recommendations get saved
+  const row = document.querySelector(`.set-row[data-key="${date}-${exId}-${idx}"]`);
+  if (row) {
+    const wInput = row.querySelector('input[data-field="weight"]');
+    const rInput = row.querySelector('input[data-field="reps"]');
+    const rpeInput = row.querySelector('input[data-field="rpe"]');
+    if (wInput && wInput.value !== '') data.sets[exId][idx].weight = wInput.value;
+    if (rInput && rInput.value !== '') data.sets[exId][idx].reps = rInput.value;
+    if (rpeInput && rpeInput.value !== '') data.sets[exId][idx].rpe = rpeInput.value;
+  }
   data.sets[exId][idx].done = !data.sets[exId][idx].done;
   saveState();
   rerenderDay(date);
